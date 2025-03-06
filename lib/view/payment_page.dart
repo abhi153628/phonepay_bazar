@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:phone_pay_bazaar/view/orders_sucess_page.dart';
 import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -160,16 +161,32 @@ class _PaymentPageState extends State<PaymentPage> {
           logger.e("Transaction error: $error");
         }
         
-        if (status == 'SUCCESS') {
-          setState(() {
-            result = "Payment Successful! Transaction ID: $merchantTransactionId";
-          });
-          _verifyPaymentWithBackend(merchantTransactionId);
-        } else {
-          setState(() {
-            result = "Payment ${status.toLowerCase()}. Error: $error";
-          });
-        }
+        // Inside the startPhonePeTransaction method in PaymentPage class
+if (status == 'SUCCESS') {
+  setState(() {
+    result = "Payment Successful! Transaction ID: $merchantTransactionId";
+  });
+  _verifyPaymentWithBackend(merchantTransactionId);
+  
+  // Add this navigation code
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (context) => OrderSuccessPage(
+        orderNumber: merchantTransactionId,
+        totalAmount: 7149.35,
+        productName: "RS-X Toys Unisex Sneakers",
+        productVariant: "Puma White-Puma Royal-High Risk Red",
+        productSize: "S",
+      ),
+    ),
+  );
+} else {
+  setState(() {
+    result = "Payment ${status.toLowerCase()}. Error: $error";
+  });
+}
+
       } else {
         setState(() {
           result = "Transaction interrupted or cancelled by user";
