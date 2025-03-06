@@ -14,11 +14,417 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'PhonePe Payment',
+      title: 'RS-X Toys Unisex Sneakers',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.blue,
+        fontFamily: 'Roboto',
       ),
-      home: const PaymentPage(),
+      home: const ProductDetailPage(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class ProductDetailPage extends StatefulWidget {
+  const ProductDetailPage({Key? key}) : super(key: key);
+
+  @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  final String productId = "369449_02";
+  final String productName = "RS-X Toys Unisex Sneakers";
+  final double productPrice = 10999.00;
+  final double discount = 3849.65;
+  final int quantity = 1;
+  int selectedImageIndex = 0;
+  String selectedSize = "S";
+  
+  final List<String> sizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  
+  final List<Map<String, dynamic>> colorVariants = [
+    {
+      "name": "Puma White-Puma Royal-High Risk Red",
+      "images": [
+        "asset/Screenshot 2025-03-06 120810.png",
+        "asset/Screenshot 2025-03-06 120752.png",
+        "asset/Screenshot 2025-03-06 120726.png",
+        "asset/Screenshot 2025-03-06 120745.png",
+        "asset/Screenshot 2025-03-06 120714.png",
+      ]
+    },
+    {
+      "name": "High Rise-Puma White",
+      "images": [
+        "asset/Screenshot 2025-03-06 121123.png",
+        "asset/Screenshot 2025-03-06 121129.png",
+        "asset/Screenshot 2025-03-06 121115.png",
+        "asset/Screenshot 2025-03-06 121109.png",
+        "asset/Screenshot 2025-03-06 121102.png",
+      ]
+    },
+    {
+      "name": "Puma White-High Risk Red",
+      "images": [
+        "asset/Screenshot 2025-03-06 121201.png",
+        "asset/Screenshot 2025-03-06 121206.png",
+        "asset/Screenshot 2025-03-06 121154.png",
+        "asset/Screenshot 2025-03-06 121148.png",
+        "asset/Screenshot 2025-03-06 121142.png",
+      ]
+    },
+  ];
+  
+  int selectedVariant = 0;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+    
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildProductImages(),
+            _buildProductInfo(),
+            _buildColorVariants(),
+            _buildSizeSelector(),
+        
+            _buildAddToCartSection(),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildProductImages() {
+    return Stack(
+      children: [
+      
+        Container(
+
+          height: 400,
+          width: double.infinity,
+          child: PageView.builder(
+            itemCount: colorVariants[selectedVariant]["images"].length,
+            onPageChanged: (index) {
+              setState(() {
+                selectedImageIndex = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              return Image.asset(
+                colorVariants[selectedVariant]["images"][index],
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[200],
+                  child: Center(
+                    child: Icon(Icons.image_not_supported, size: 50, color: Colors.grey[400]),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Positioned(
+          bottom: 10,
+          left: 0,
+          right: 0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              colorVariants[selectedVariant]["images"].length,
+              (index) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 2),
+                width: index == selectedImageIndex ? 16 : 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: index == selectedImageIndex ? Colors.black : Colors.grey,
+                ),
+              ),
+            ),
+          ),
+        ),
+          Positioned(top: 32,left: 20,
+            child: Container(child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(Icons.arrow_back_ios),
+                    )),
+          ),
+      ],
+    );
+  }
+  
+  Widget _buildProductInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Text(
+                "PUMA",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(width: 8),
+              Icon(Icons.star, color: Colors.amber, size: 16),
+              Text(
+                "4.9 (288)",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            productName,
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          
+          Text(
+            "Style: $productId",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text(
+                  "35%",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                "₹${productPrice.toStringAsFixed(0)}",
+                style: TextStyle(
+                  fontSize: 16,
+                  decoration: TextDecoration.lineThrough,
+                  color: Colors.grey[600],
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                "₹${(productPrice - discount).toStringAsFixed(0)}",
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildColorVariants() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Color",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            colorVariants[selectedVariant]["name"],
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 6),
+          SizedBox(
+            height: 60,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: colorVariants.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedVariant = index;
+                      selectedImageIndex = 0;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: selectedVariant == index ? Colors.black : Colors.grey[300]!,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: Image.asset(
+                        colorVariants[index]["images"][0],
+                        width: 60,
+                        height: 80,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          width: 80,
+                          height: 80,
+                          color: Colors.grey[200],
+                          child: Center(
+                            child: Icon(Icons.image_not_supported, size: 24, color: Colors.grey[400]),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  
+  Widget _buildSizeSelector() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Choose your size",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+       
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              childAspectRatio: 1,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 6,
+            ),
+            itemCount: sizes.length,
+            itemBuilder: (context, index) {
+              final size = sizes[index];
+              final isSelected = size == selectedSize;
+              
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedSize = size;
+                  });
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.white : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: isSelected ? Colors.black : Colors.grey[300]!,
+                      width: 1,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      size,
+                      style: TextStyle(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+  
+  
+
+  
+  Widget _buildAddToCartSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () {},
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                side: const BorderSide(color: Colors.black),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                "Add to cart",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PaymentPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: const Text(
+                "Buy now",
+                style: TextStyle(fontSize: 16,color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -46,10 +452,10 @@ class _PaymentPageState extends State<PaymentPage> {
   String result = "";
   bool isLoading = false;
 
-  // PhonePe Configuration - CORRECT VALUES
-  final String environment = "SANDBOX"; // Use "SANDBOX" for testing, "PRODUCTION" for live
-  final String merchantId = "PGTESTPAYUAT86"; // Your merchant ID
-  final String appId = ""; // Usually empty for standard integration
+  // PhonePe Configuration
+  final String environment = "SANDBOX";
+  final String merchantId = "PGTESTPAYUAT86";
+  final String appId = "";
   final String saltKey = "96434309-7796-489d-8924-ab56988a6076";
   final int saltIndex = 1;
   final String apiEndpoint = "/pg/v1/pay";
@@ -61,14 +467,12 @@ class _PaymentPageState extends State<PaymentPage> {
     _initPhonePeSdk();
   }
   
-  // Initialize PhonePe SDK
   Future<void> _initPhonePeSdk() async {
     try {
       setState(() {
         isLoading = true;
       });
       
-      // Make sure parameters match exactly what's expected by the SDK
       final result = await PhonePePaymentSdk.init(
         environment,
         appId,
@@ -92,12 +496,10 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
   
-  // Generate a unique transaction ID
   String generateTransactionId() {
     return "MT${DateTime.now().millisecondsSinceEpoch}";
   }
   
-  // Generate base64 encoded payload for PhonePe
   String generateBase64Payload(double amount, String merchantTransactionId) {
     Map<String, dynamic> paymentInstrument = {
       "type": "PAY_PAGE"
@@ -107,9 +509,9 @@ class _PaymentPageState extends State<PaymentPage> {
       "merchantId": merchantId,
       "merchantTransactionId": merchantTransactionId,
       "merchantUserId": "MUID${DateTime.now().millisecondsSinceEpoch}",
-      "amount": (amount * 100).toInt(), // Convert to paisa
-      "callbackUrl": "https://webhook.site/callback-url", // Replace with your callback URL
-      "mobileNumber": "9999999999", // Optional, but some value is safer
+      "amount": (amount * 100).toInt(),
+      "callbackUrl": "https://webhook.site/callback-url",
+      "mobileNumber": "9999999999",
       "paymentInstrument": paymentInstrument,
     };
     
@@ -122,7 +524,6 @@ class _PaymentPageState extends State<PaymentPage> {
     return base64Body;
   }
   
-  // Calculate checksum for PhonePe transaction
   String calculateChecksum(String base64Body) {
     String dataToHash = base64Body + apiEndpoint + saltKey;
     var bytes = utf8.encode(dataToHash);
@@ -134,7 +535,6 @@ class _PaymentPageState extends State<PaymentPage> {
     return checksum;
   }
   
-  // Start PhonePe transaction - FIXED PARAMETER ISSUE
   Future<void> startPhonePeTransaction(double amount) async {
     if (!isInitialized) {
       setState(() {
@@ -154,13 +554,9 @@ class _PaymentPageState extends State<PaymentPage> {
       String base64Body = generateBase64Payload(amount, merchantTransactionId);
       String checksum = calculateChecksum(base64Body);
       
-      // Use null for packageName if not needed, or your app's package for production
       String? packageName = null;
+      String callbackUrl = "flutterphonepe";
       
-      // Callback URL scheme for returning to the app after payment
-      String callbackUrl = "flutterphonepe"; // Your app's URL scheme
-      
-      // Fixed parameters according to the SDK method signature
       Map<dynamic, dynamic>? response = await PhonePePaymentSdk.startTransaction(
         base64Body, 
         callbackUrl, 
@@ -172,7 +568,6 @@ class _PaymentPageState extends State<PaymentPage> {
         isLoading = false;
       });
       
-      // Handle the response
       if (response != null) {
         String status = response['status'] ?? "FAILURE";
         String error = response['error'] ?? "";
@@ -186,7 +581,6 @@ class _PaymentPageState extends State<PaymentPage> {
           setState(() {
             result = "Payment Successful! Transaction ID: $merchantTransactionId";
           });
-          // You may want to verify this with your backend using the Check Status API
           _verifyPaymentWithBackend(merchantTransactionId);
         } else {
           setState(() {
@@ -208,22 +602,15 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
   
-  // This method would call your backend to verify payment status
   Future<void> _verifyPaymentWithBackend(String transactionId) async {
-    // In a real implementation, you would make an API call to your backend
-    // Your backend should call PhonePe's check status API to verify the payment
-    
     logger.i("Verifying payment with backend for transaction: $transactionId");
     
-    // Simulate backend verification
     await Future.delayed(const Duration(seconds: 2));
     
-    // Example response handling
-    bool isPaymentVerified = true; // This should come from your backend
+    bool isPaymentVerified = true;
     
     if (isPaymentVerified) {
       logger.i("Payment verified successfully");
-      // Proceed with order fulfillment
     } else {
       logger.w("Payment verification failed");
       setState(() {
@@ -235,75 +622,283 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('PhonePe Payment Gateway'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // PhonePe logo
-              Icon(
-                Icons.payment,
-                size: 80,
-                color: const Color(0xFF5f259f), // PhonePe purple color
-              ),
-              const SizedBox(height: 30),
-              
-              Text(
-                isInitialized ? "PhonePe SDK Ready" : "Initializing PhonePe SDK...",
-                style: TextStyle(
-                  color: isInitialized ? Colors.green : Colors.orange,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              
-              const SizedBox(height: 20),
-              
-              const Text(
-                "Amount: ₹100.00",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              
-              const SizedBox(height: 30),
-              
-              if (isLoading)
-                const CircularProgressIndicator()
-              else
-                ElevatedButton(
-                  onPressed: isInitialized
-                    ? () => startPhonePeTransaction(100.0) // ₹100
-                    : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF5f259f),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 40,
-                      vertical: 15,
-                    ),
-                  ),
-                  child: const Text(
-                    "Pay Now",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              
-              const SizedBox(height: 30),
-              
-              Text(
-                result,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: result.contains("Successful") ? Colors.green : Colors.black,
-                ),
-              ),
-            ],
-          ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Checkout',
+          style: TextStyle(color: Colors.black),
         ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Order Details",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            'asset/Screenshot 2025-03-06 121201.png',
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Container(
+                                  width: 80,
+                                  height: 80,
+                                  color: Colors.grey[200],
+                                  child: const Icon(Icons.image_not_supported, size: 30),
+                                ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "RS-X Toys Unisex Sneakers",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                "Puma White-Puma Royal-High Risk Red | Size: S",
+                                style: TextStyle(
+                                  color: Colors.grey[600],
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                "₹7,149.35",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      "Payment Options",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF5f259f).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Icon(
+                          Icons.phone_android,
+                          color: Color(0xFF5f259f),
+                        ),
+                      ),
+                      title: const Text(
+                        "PhonePe",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: const Text("Pay using PhonePe wallet or UPI"),
+                      trailing: Radio<String>(
+                        value: "phonepe",
+                        groupValue: "phonepe",
+                        onChanged: (value) {},
+                        activeColor: const Color(0xFF5f259f),
+                      ),
+                    ),
+                    const Divider(),
+                    if (isLoading)
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(24),
+                          child: CircularProgressIndicator(
+                            color: Color(0xFF5f259f),
+                          ),
+                        ),
+                      )
+                    else
+                      ElevatedButton(
+                        onPressed: isInitialized
+                          ? () => startPhonePeTransaction(7149.35)
+                          : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF5f259f),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
+                        child: const Text(
+                          "PAY ₹7,149.35",
+                          style: TextStyle(fontSize: 16,color: Colors.white),
+                        ),
+                      ),
+                    if (result.isNotEmpty)
+                      Container(
+                        margin: const EdgeInsets.only(top: 16),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: result.contains("Successful")
+                            ? Colors.green[50]
+                            : Colors.orange[50],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: result.contains("Successful")
+                              ? Colors.green
+                              : Colors.orange,
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          result,
+                          style: TextStyle(
+                            color: result.contains("Successful")
+                              ? Colors.green[800]
+                              : Colors.orange[800],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+                side: BorderSide(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Price Details",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    _buildCheckoutRow("Price (1 item)", "₹10,999.00"),
+                    _buildCheckoutRow("Discount", "- ₹3,849.65"),
+                    _buildCheckoutRow("Delivery Charges", "FREE"),
+                    const Divider(height: 24),
+                    _buildCheckoutRow(
+                      "Total Amount",
+                      "₹7,149.35",
+                      isBold: true,
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.green[50],
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.local_offer, color: Colors.green[700], size: 16),
+                          const SizedBox(width: 8),
+                          Text(
+                            "You're saving ₹3,849.65 on this order",
+                            style: TextStyle(
+                              color: Colors.green[700],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildCheckoutRow(String label, String value, {bool isBold = false}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: isBold ? 16 : 14,
+              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }
