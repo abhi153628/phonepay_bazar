@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:phone_pay_bazaar/main.dart';
 import 'package:phone_pay_bazaar/view/payment_page.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -9,10 +8,6 @@ class ProductDetailPage extends StatefulWidget {
   State<ProductDetailPage> createState() => _ProductDetailPageState();
 }
 
-
-
-
-
 class _ProductDetailPageState extends State<ProductDetailPage> {
   //! Product information constants
   final String productId = "369449_02";
@@ -20,15 +15,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   final double productPrice = 10999.00;
   final double discount = 3849.65;
   final int quantity = 1;
-  
+
   //! UI state variables
   int selectedImageIndex = 0;
   String selectedSize = "S";
   int selectedVariant = 0;
-  
+
   //! Available sizes
   final List<String> sizes = ["XS", "S", "M", "L", "XL", "XXL"];
-  
+
   //! Color variants with associated images
   final List<Map<String, dynamic>> colorVariants = [
     {
@@ -62,7 +57,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ]
     },
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,16 +68,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           children: [
             //! Product image carousel
             _buildProductImages(),
-            
+
             //! Small divider for visual separation
             Divider(height: 1, thickness: 1, color: Colors.grey[200]),
-            
+
             //! Color variants selection
             _buildColorVariants(),
-            
+
             //! Size selector with reduced spacing
             _buildSizeSelector(),
-            
+
             //! Action buttons (Add to cart, Buy now)
             _buildAddToCartSection(),
           ],
@@ -90,7 +85,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
   }
-  
+
   //! Product image carousel with pagination indicators
   Widget _buildProductImages() {
     return Stack(
@@ -113,14 +108,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 errorBuilder: (context, error, stackTrace) => Container(
                   color: Colors.grey[200],
                   child: Center(
-                    child: Icon(Icons.image_not_supported, size: 50, color: Colors.grey[400]),
+                    child: Icon(Icons.image_not_supported,
+                        size: 50, color: Colors.grey[400]),
                   ),
                 ),
               );
             },
           ),
         ),
-        
+
         //! Pagination indicators
         Positioned(
           bottom: 10,
@@ -136,13 +132,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 height: 7,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  color: index == selectedImageIndex ? Colors.black : Colors.grey,
+                  color:
+                      index == selectedImageIndex ? Colors.black : Colors.grey,
                 ),
               ),
             ),
           ),
         ),
-        
+
         //! Back button with improved styling
         Positioned(
           top: 32,
@@ -158,7 +155,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
           ),
         ),
-         Positioned(
+        Positioned(
           top: 32,
           left: 330,
           child: Container(
@@ -168,107 +165,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.favorite, size: 25,color: Colors.red,),
+              child: Icon(
+                Icons.favorite,
+                size: 25,
+                color: Colors.red,
+              ),
             ),
           ),
         ),
       ],
     );
   }
-  
-  //! Product information section (brand, name, price)
-  Widget _buildProductInfo() {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //! Brand and rating
-          Row(
-            children: const [
-              Text(
-                "PUMA",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(width: 8),
-              Icon(Icons.star, color: Colors.amber, size: 16),
-              Text(
-                "4.9 (288)",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        
-          
-          // !Product name and style number
-          Text(
-            productName,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(
-            "Style: $productId",
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
-          ),
-        
-          
-          //! Pricing information with discount
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text(
-                  "35%",
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "₹${productPrice.toStringAsFixed(0)}",
-                style: TextStyle(
-                  fontSize: 16,
-                  decoration: TextDecoration.lineThrough,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                "₹${(productPrice - discount).toStringAsFixed(0)}",
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-  
+
   // !Color variants selection with horizontal scrollable list
   Widget _buildColorVariants() {
     return Padding(
-      //! Adjusted padding to reduce unnecessary space
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,7 +191,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-      
           Text(
             colorVariants[selectedVariant]["name"],
             style: TextStyle(
@@ -306,7 +216,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     margin: const EdgeInsets.only(right: 8),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: selectedVariant == index ? Colors.black : Colors.grey[300]!,
+                        color: selectedVariant == index
+                            ? Colors.black
+                            : Colors.grey[300]!,
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(8),
@@ -323,7 +235,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           height: 80,
                           color: Colors.grey[200],
                           child: Center(
-                            child: Icon(Icons.image_not_supported, size: 24, color: Colors.grey[400]),
+                            child: Icon(Icons.image_not_supported,
+                                size: 24, color: Colors.grey[400]),
                           ),
                         ),
                       ),
@@ -337,11 +250,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
   }
-  
+
   //! Size selection grid with reduced spacing
   Widget _buildSizeSelector() {
     return Padding(
-      //! Reduced padding for better spacing
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -353,7 +265,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-        
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -367,7 +278,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             itemBuilder: (context, index) {
               final size = sizes[index];
               final isSelected = size == selectedSize;
-              
+
               return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -387,7 +298,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     child: Text(
                       size,
                       style: TextStyle(
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight:
+                            isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
                     ),
                   ),
@@ -399,7 +311,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       ),
     );
   }
-  
+
   //! Action buttons section (Add to cart and Buy now)
   Widget _buildAddToCartSection() {
     return Padding(
