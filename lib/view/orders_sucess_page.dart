@@ -30,7 +30,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
   void initState() {
     super.initState();
     _confettiController = ConfettiController(duration: const Duration(seconds: 2));
-    // Play confetti animation when the page loads
+    //! Play confetti animation when the page loads
     Future.delayed(const Duration(milliseconds: 300), () {
       _confettiController.play();
     });
@@ -50,7 +50,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            // Confetti animation overlay
+            //! Confetti animation overlay
             ConfettiWidget(
               confettiController: _confettiController,
               blastDirection: -pi / 2, // Straight up
@@ -68,14 +68,14 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
               ],
             ),
             
-            // Main content
+            //! Main content
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Back button
+                    //! Back button
                     Align(
                       alignment: Alignment.topLeft,
                       child: IconButton(
@@ -86,7 +86,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                     
                     const SizedBox(height: 40),
                     
-                    // Success animation/icon
+                    //! Success animation/icon
                     Container(
                       width: 100,
                       height: 100,
@@ -103,7 +103,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                     
                     const SizedBox(height: 24),
                     
-                    // Success message
+                    //! Success message
                     const Text(
                       "Payment Successful!",
                       style: TextStyle(
@@ -124,7 +124,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                     
                     const SizedBox(height: 40),
                     
-                    // Order summary card
+                    //! Order summary card
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -155,11 +155,11 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                             
                             const SizedBox(height: 20),
                             
-                            // Product details
+                            //! Product details
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Product image
+                                //! Product image
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.asset(
@@ -178,7 +178,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                                 
                                 const SizedBox(width: 16),
                                 
-                                // Product info
+                                //! Product info
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +220,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                             const Divider(),
                             const SizedBox(height: 20),
                             
-                            // Payment info
+                            //! Payment info
                             _buildInfoRow("Payment Method", "PhonePe"),
                             _buildInfoRow("Date", _getCurrentDate()),
                             _buildInfoRow("Tracking Number", "PUMA${widget.orderNumber}"),
@@ -229,14 +229,14 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                             const Divider(),
                             const SizedBox(height: 20),
                             
-                            // Price breakdown
+                            //! Price breakdown
                             _buildPriceRow("Subtotal", "₹10,999.00"),
                             _buildPriceRow("Discount", "-₹3,849.65"),
                             _buildPriceRow("Shipping", "FREE"),
                             
                             const SizedBox(height: 12),
                             
-                            // Total
+                            //! Total
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -259,7 +259,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                             
                             const SizedBox(height: 16),
                             
-                            // Savings info
+                            //! Savings info
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
@@ -290,12 +290,12 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                     
                     const SizedBox(height: 40),
                     
-                    // Continue shopping button
+                    //! Continue shopping button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          // Navigate to home or products page
+                          // !Navigate to home or products page
                           Navigator.of(context).popUntil((route) => route.isFirst);
                         },
                         style: ElevatedButton.styleFrom(
@@ -317,7 +317,7 @@ class _OrderSuccessPageState extends State<OrderSuccessPage> {
                     
                     const SizedBox(height: 16),
                     
-                    // View orders button
+                    //! View orders button
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
